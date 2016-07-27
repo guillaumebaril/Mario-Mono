@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:/Users/Guillaume/Documents/Visual Studio 2015/Projects/Game1/Mario-Mono/Game1/Content/Arial8.spritefont</SourceFile>
+  <SourceTime>2016-07-26T21:21:10.9267065-04:00</SourceTime>
+  <DestFile>C:/Users/Guillaume/Documents/Visual Studio 2015/Projects/Game1/Mario-Mono/Game1/Content/bin/Windows/Arial8.xnb</DestFile>
+  <DestTime>2016-07-27T15:37:05.8316184-04:00</DestTime>
+  <Importer>FontDescriptionImporter</Importer>
+  <ImporterTime>2016-03-30T02:36:08-04:00</ImporterTime>
+  <Processor>FontDescriptionProcessor</Processor>
+  <ProcessorTime>2016-03-30T02:36:08-04:00</ProcessorTime>
+  <Parameters>
+    <Key>TextureFormat</Key>
+    <Value>Compressed</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>
