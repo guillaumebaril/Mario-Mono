@@ -73,7 +73,7 @@ namespace Game1
 
             _Player = new Player(this);
             _Player.SprInfo = SprInfo;
-            _Player.Pos = new Vector2(300, 200);
+            _Player.Position = new Vector2(300, 200);
 
             IsMouseVisible = true;
         }
@@ -113,22 +113,22 @@ namespace Game1
                 _Player.WalkRight();
             }
 
-            if (kbs.IsKeyDown(Keys.Down))
+            if (kbs.IsKeyDown(Keys.Space))
             {
-                _Player.WalkDown();
-            }
-
-            if (kbs.IsKeyDown(Keys.Up))
-            {
-                _Player.WalkUp();
+                _Player.Jump();
             }
 
             var c = (float) ts.TotalSeconds * 300;
 
+            if (_Player is IMoveableObject)
+            {
+                UpdateMoveableObject(gameTime, _Player);
+            }
+
             _Player.Update(gameTime);
 
-            int pvpx = _Camera.ToViewportX(_Player.Pos.X);
-            int pvpy = _Camera.ToViewportY(_Player.Pos.Y);
+            int pvpx = _Camera.ToViewportX(_Player.Position.X);
+            int pvpy = _Camera.ToViewportY(_Player.Position.Y);
 
             if (pvpx < _CamBounds.X)
             {
@@ -161,6 +161,25 @@ namespace Game1
                 {
                     Source = new Point(0, 0)
                 };
+            }
+        }
+
+        private void UpdateMoveableObject(GameTime gameTime, IMoveableObject obj)
+        {
+            obj.Position += obj.Velocity;
+
+            obj.Velocity *= new Vector2(0.95f, 1);
+            obj.Velocity += new Vector2(0, (float)(gameTime.ElapsedGameTime.TotalSeconds * 20));
+
+            if (obj.Velocity.Y > 10) obj.Velocity = new Vector2(obj.Velocity.X, 10);
+
+            var tx = (int)(obj.Position.X / 32);
+            var ty = (int)((obj.Position.Y  + 56) / 32);
+
+            if (_Map[tx, ty] != null)
+            {
+                obj.Position = new Vector2(obj.Position.X, ty * 32 - 56);
+                obj.Velocity = new Vector2(obj.Velocity.X, 0);
             }
         }
 
@@ -243,7 +262,7 @@ namespace Game1
 
             var rect = spr.GetCurrentSrcRect();
 
-            spriteBatch.Draw(spr.Texture, new Rectangle(_Camera.ToViewportX(player.Pos.X), _Camera.ToViewportY(player.Pos.Y), rect.Width * 2, rect.Height * 2), rect, Color.White, 0f, Vector2.Zero, spr.Effect, 0);
+            spriteBatch.Draw(spr.Texture, new Rectangle(_Camera.ToViewportX(player.Position.X), _Camera.ToViewportY(player.Position.Y), rect.Width * 2, rect.Height * 2), rect, Color.White, 0f, Vector2.Zero, spr.Effect, 0);
         }
     }
 }

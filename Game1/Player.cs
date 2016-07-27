@@ -9,12 +9,25 @@ using System.Threading.Tasks;
 
 namespace Game1
 {
-    public class Player  
+    public interface IMoveableObject
     {
-        public Vector2 Pos = new Vector2(0, 0);
-        public Vector2 Vel = new Vector2(0, 0);
+        Vector2 Position
+        {
+            get; set;
+        }
 
+        Vector2 Velocity
+        {
+            get; set;
+        }
+    }
+
+    public class Player : IMoveableObject 
+    {
         public SpriteInfo SprInfo { get; set;  }
+
+        public Vector2 Position { get; set; }
+        public Vector2 Velocity { get; set; }
 
         private Game1 _Game;
 
@@ -25,12 +38,17 @@ namespace Game1
 
         public void Update(GameTime gameTime)
         {
-            Pos += Vel;
-            Vel *= 0.95f;
-
             if (gameTime.ElapsedGameTime.TotalSeconds > 0.3)
             {
                 SprInfo.Step();
+            }
+        }
+
+        public void Jump()
+        {
+            if (Velocity.Y == 0)
+            {
+                Velocity = new Vector2(Velocity.X, -10);
             }
         }
 
@@ -38,24 +56,14 @@ namespace Game1
         {
             SprInfo.SetAction("walkleft");
 
-            Vel += new Vector2(-0.3f, 0);
+            Velocity += new Vector2(-0.3f, 0);
         }
 
         public void WalkRight()
         {
             SprInfo.SetAction("walkright");
 
-            Vel += new Vector2(0.3f, 0);
-        }
-
-        public void WalkDown()
-        {
-            Vel += new Vector2(0, 0.3f);
-        }
-
-        public void WalkUp()
-        {
-            Vel += new Vector2(0, -0.3f);
+            Velocity += new Vector2(0.3f, 0);
         }
     }
 }
