@@ -9,17 +9,15 @@ using System.Threading.Tasks;
 
 namespace Game1
 {
-    public interface IMoveableObject
+    public interface IEntity
     {
-        Vector2 Position
-        {
-            get; set;
-        }
+        Vector2 Position { get; set; }
+    }
 
-        Vector2 Velocity
-        {
-            get; set;
-        }
+    public interface IMoveableObject : IEntity 
+    {
+        Vector2 Velocity { get; set; }
+        Rectangle CollisionBox { get; set; }
     }
 
     public class Player : IMoveableObject 
@@ -28,12 +26,12 @@ namespace Game1
 
         public Vector2 Position { get; set; }
         public Vector2 Velocity { get; set; }
+        public Rectangle CollisionBox { get; set; }
 
-        private Game1 _Game;
-
-        public Player(Game game)
+        public Player(SpriteInfo sprInfo)
         {
-            _Game = (Game1)game;
+            SprInfo = sprInfo;
+            CollisionBox = new Rectangle(11, 2, 17, 54);
         }
 
         public void Update(GameTime gameTime)
@@ -56,14 +54,23 @@ namespace Game1
         {
             SprInfo.SetAction("walkleft");
 
-            Velocity += new Vector2(-0.3f, 0);
+            //TODO: Remove debug stuff
+            if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
+                Velocity += new Vector2(-0.01f, 0);
+            else
+                Velocity += new Vector2(-0.3f, 0);
         }
 
         public void WalkRight()
         {
             SprInfo.SetAction("walkright");
 
-            Velocity += new Vector2(0.3f, 0);
+            //TODO: Remove debug stuff
+            if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
+                Velocity += new Vector2(0.01f, 0);
+            else
+                Velocity += new Vector2(0.3f, 0);
+
         }
     }
 }

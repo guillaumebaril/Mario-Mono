@@ -27,14 +27,8 @@ namespace Game1
 
         public TileData this[int x, int y]
         {
-            get
-            {
-                return _TileData[x, y];
-            }
-            set
-            {
-                _TileData[x, y] = value;
-            }
+            get { return _TileData[x, y]; }
+            set { _TileData[x, y] = value; }
         }
 
         public static MapData FromFile(string filename)

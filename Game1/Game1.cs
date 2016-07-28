@@ -71,8 +71,7 @@ namespace Game1
             SprInfo.Add("runleft", new List<Rectangle>() { new Rectangle(160, 53, 19, 28), new Rectangle(182, 53, 19, 28) }, SpriteEffects.FlipHorizontally);
             SprInfo.Add("runright", new List<Rectangle>() { new Rectangle(160, 53, 19, 28), new Rectangle(182, 53, 19, 28) }, SpriteEffects.None);
 
-            _Player = new Player(this);
-            _Player.SprInfo = SprInfo;
+            _Player = new Player(SprInfo);
             _Player.Position = new Vector2(300, 200);
 
             IsMouseVisible = true;
@@ -171,15 +170,92 @@ namespace Game1
             obj.Velocity *= new Vector2(0.95f, 1);
             obj.Velocity += new Vector2(0, (float)(gameTime.ElapsedGameTime.TotalSeconds * 20));
 
-            if (obj.Velocity.Y > 10) obj.Velocity = new Vector2(obj.Velocity.X, 10);
+            if (obj.Velocity.Y > 10)
+            {
+                obj.Velocity = new Vector2(obj.Velocity.X, 10);
+            }
 
-            var tx = (int)(obj.Position.X / 32);
-            var ty = (int)((obj.Position.Y  + 56) / 32);
+            if (obj.Velocity.Y > 0)
+            {
+                CheckBottomCollision(obj);
+            }
+
+            if (obj.Velocity.Y < 0)
+            {
+                //CheckTopCollision(obj);
+            }
+
+            if (obj.Velocity.X < 0)
+            {
+                CheckLeftCollision(obj);
+            }
+
+            if (obj.Velocity.X > 0)
+            {
+                CheckRightCollision(obj);
+            }
+        }
+
+        private void CheckBottomCollision(IMoveableObject obj)
+        {
+            int tx = (int)((obj.Position.X + obj.CollisionBox.X) / 32);
+            int ty = (int)((obj.Position.Y + obj.CollisionBox.Bottom) / 32);
 
             if (_Map[tx, ty] != null)
             {
-                obj.Position = new Vector2(obj.Position.X, ty * 32 - 56);
+                obj.Position = new Vector2(obj.Position.X, ty * 32 - obj.CollisionBox.Bottom);
                 obj.Velocity = new Vector2(obj.Velocity.X, 0);
+            }
+
+            tx = (int)((obj.Position.X + obj.CollisionBox.Right) / 32);
+            ty = (int)((obj.Position.Y + obj.CollisionBox.Bottom) / 32);
+
+            if (_Map[tx, ty] != null)
+            {
+                obj.Position = new Vector2(obj.Position.X, ty * 32 - obj.CollisionBox.Bottom);
+                obj.Velocity = new Vector2(obj.Velocity.X, 0);
+            }
+        }
+
+        private void CheckLeftCollision(IMoveableObject obj)
+        {
+            int tx = (int)((obj.Position.X + obj.CollisionBox.X - 4) / 32);
+            int ty = (int)((obj.Position.Y + obj.CollisionBox.Bottom - 4) / 32);
+
+            if (_Map[tx, ty] != null)
+            {
+                obj.Position = new Vector2((tx + 1) * 32 - obj.CollisionBox.X + 4, obj.Position.Y);
+                obj.Velocity = new Vector2(0, obj.Velocity.Y);
+            }
+
+            tx = (int)((obj.Position.X + obj.CollisionBox.X) / 32);
+            ty = (int)((obj.Position.Y + obj.CollisionBox.Y) / 32);
+
+            if (_Map[tx, ty] != null)
+            {
+                obj.Position = new Vector2((tx + 1) * 32 - obj.CollisionBox.X + 4, obj.Position.Y);
+                obj.Velocity = new Vector2(0, obj.Velocity.Y);
+            }
+        }
+
+        private void CheckRightCollision(IMoveableObject obj)
+        {
+            int tx = (int)((obj.Position.X + obj.CollisionBox.Right + 4) / 32);
+            int ty = (int)((obj.Position.Y + obj.CollisionBox.Bottom - 4) / 32);
+
+            if (_Map[tx, ty] != null)
+            {
+                obj.Position = new Vector2(tx * 32 - obj.CollisionBox.Right - 4, obj.Position.Y);
+                obj.Velocity = new Vector2(0, obj.Velocity.Y);
+            }
+
+            tx = (int)((obj.Position.X + obj.CollisionBox.Right) / 32);
+            ty = (int)((obj.Position.Y + obj.CollisionBox.Y) / 32);
+
+            if (_Map[tx, ty] != null)
+            {
+                obj.Position = new Vector2(tx * 32 - obj.CollisionBox.Right - 4, obj.Position.Y);
+                obj.Velocity = new Vector2(0, obj.Velocity.Y);
             }
         }
 
