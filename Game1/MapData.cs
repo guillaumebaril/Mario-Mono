@@ -7,11 +7,6 @@ using System.Threading.Tasks;
 
 namespace Game1
 {
-    public class TileData
-    {
-        public Point Source;
-    }
-
     public class MapData
     {
         private TileData[,] _TileData = null;
@@ -60,6 +55,37 @@ namespace Game1
                     }
                 }
             }
+
+            for (int x = 12; x < 46; x++)
+            {
+                if (x > 25)
+                {
+                    md[x, h - 6 - (int)(Math.Floor((x - 25) / 2.0))] = new TileData()
+                    {
+                        Source = new Point(rand.Next(10) * 32, 0)
+                    };
+                }
+                else
+                {
+                    md[x, h - (x > 18 ? 6 : 5)] = new TileData()
+                    {
+                        Source = new Point(rand.Next(10) * 32, 0)
+                    };
+                }
+            }
+
+            for (int x = 30; x < 60; x++)
+            {
+                if (x < 37 || x > 54 || x % 2 == 0)
+                {
+                    md[x, h - 3] = new TileData()
+                    {
+                        Source = new Point(rand.Next(10) * 32, 0)
+                    };
+                }
+
+            }
+
 
             return md;
         }
